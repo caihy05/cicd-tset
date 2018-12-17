@@ -7,7 +7,7 @@ import (
 )
 
 func main() {
-	synctime := flag.Int("sync-time", 10, "sync time defualt 10s")
+	synctime := flag.Int("sync-time", 30, "sync time defualt 10s")
 	targetdir := flag.String("target-dir", "s3://dsdata01/rec_plt_svr", "aws s3 dir defualt /dsdata01/rec_plt_svr")
 
 	flag.Parse()
