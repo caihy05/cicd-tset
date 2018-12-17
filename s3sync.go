@@ -16,7 +16,7 @@ func main() {
 
 	for {
 		timeStr := time.Now().Format("2006-01-02 15:04:05")
-		st := time.Duration(*synctime)
+		st := time.Duration(*synctime) * 1000000000
 		time.Sleep(st * time.Second)
 		fmt.Println("当前时间：", timeStr, "同步间隔时间：", st, "拷贝目录：", *targetdir)
 		runcmd(*targetdir)
