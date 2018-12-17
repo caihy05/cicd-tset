@@ -15,10 +15,10 @@ func main() {
 	flag.Parse()
 
 	for {
-		timeStr := time.Now().Format("2018-12-17 11:11:11")
+		timeStr := time.Now().Format("2006-01-02 15:04:05")
 		st := time.Duration(*synctime)
 		time.Sleep(st * time.Second)
-		fmt.Println("当前实际：", timeStr, "同步间隔时间：", st, "拷贝目录：", *targetdir)
+		fmt.Println("当前时间：", timeStr, "同步间隔时间：", st, "拷贝目录：", *targetdir)
 		runcmd(*targetdir)
 	}
 }
