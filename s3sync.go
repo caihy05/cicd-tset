@@ -3,8 +3,6 @@ package main
 import (
 	"flag"
 	"fmt"
-	"log"
-	"os/exec"
 	"time"
 )
 
@@ -16,16 +14,17 @@ func main() {
 
 	for {
 		timeStr := time.Now().Format("2006-01-02 15:04:05")
-		st := time.Duration(*synctime) * 1000000000
+		st := time.Duration(*synctime)
 		time.Sleep(st * time.Second)
-		fmt.Println("当前时间：", timeStr, "同步间隔时间：", st, "拷贝目录：", *targetdir)
+		fmt.Println("当前时间：", timeStr, "同步间隔时间（s）：", *synctime, "拷贝目录：", *targetdir)
 		runcmd(*targetdir)
 	}
 }
 func runcmd(targetdir string) {
-	cmd := exec.Command("aws", "s3", "sync", targetdir, "/data")
-	// 运行命令
-	if err := cmd.Start(); err != nil {
-		log.Fatal(err)
-	}
+	//cmd := exec.Command("aws", "s3", "sync", targetdir, "/data")
+	//// 运行命令
+	//if err := cmd.Start(); err != nil {
+	//	log.Fatal(err)
+	//}
+	fmt.Println(targetdir)
 }
