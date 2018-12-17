@@ -18,6 +18,7 @@ func main() {
 		st := time.Duration(*synctime)
 		time.Sleep(st * time.Second)
 		fmt.Println("时间：", *synctime, "拷贝目录：", *targetdir)
+		runcmd(*targetdir)
 	}
 }
 func runcmd(targetdir string) {
