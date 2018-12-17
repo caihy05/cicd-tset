@@ -3,8 +3,7 @@ package main
 import (
 	"flag"
 	"fmt"
-	"log"
-	"os/exec"
+
 	"time"
 )
 
@@ -15,9 +14,10 @@ func main() {
 	flag.Parse()
 
 	for {
+		timeStr := time.Now().Format("2018-12-17 11:11:11")
 		st := time.Duration(*synctime)
 		time.Sleep(st * time.Second)
-		fmt.Println("时间：", *synctime, "拷贝目录：", *targetdir)
+		fmt.Println("当前实际：", timeStr, "同步间隔时间：", st, "拷贝目录：", *targetdir)
 		runcmd(*targetdir)
 	}
 }
