@@ -56,7 +56,7 @@ func runcmdpullandpush(pushsourcedir string, pushtargetdir string, pullsourcedir
 	fmt.Println("pull源路径：", pullsourcedir, "pull目标路径：", pulltargetdir, "push源路径：", pushsourcedir, "push目标路径：", pushtargetdir)
 }
 func runcmdpull(pullsourcedir string, pulltargetdir string) {
-	cmd := exec.Command("aws", "s3", "sync", pullsourcedir, pulltargetdir, "--delete")
+	cmd := exec.Command("aws", "s3", "sync", pullsourcedir, pulltargetdir, "--exact-timestamps", "--delete")
 	// 运行命令
 	if err := cmd.Start(); err != nil {
 		log.Fatal(err)
