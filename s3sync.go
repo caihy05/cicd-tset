@@ -53,6 +53,10 @@ func runcmdpullandpush(pushsourcedir string, pushtargetdir string, pullsourcedir
 	if err := cmd.Start(); err != nil {
 		log.Fatal(err)
 	}
+	
+	if err := cmd.Wait(); err != nil {
+		fmt.Println("wait:", err.Error())
+    }
 	fmt.Println("pull源路径：", pullsourcedir, "pull目标路径：", pulltargetdir, "push源路径：", pushsourcedir, "push目标路径：", pushtargetdir)
 }
 func runcmdpull(pullsourcedir string, pulltargetdir string) {
@@ -61,5 +65,8 @@ func runcmdpull(pullsourcedir string, pulltargetdir string) {
 	if err := cmd.Start(); err != nil {
 		log.Fatal(err)
 	}
+	if err := cmd.Wait(); err != nil {
+		fmt.Println("wait:", err.Error())
+    }
 	fmt.Println("pull源路径：", pullsourcedir, "pull目标路径：", pulltargetdir)
 }
