@@ -1,19 +1,44 @@
 package main
 
 import (
+	"bufio"
 	"flag"
 	"fmt"
 	"log"
+	"os"
 	"os/exec"
 	"time"
 )
 
+//写入s3 key
+func writerFile() {
+	KeyName := os.Getenv("AWS_ACCESS_KEY_ID")
+	KeyVelues := os.Getenv("AWS_SECRET_ACCESS_KEY")
+
+	err := os.Mkdir("/root/.aws", os.ModePerm)
+	if err != nil {
+		fmt.Printf("mkdir failed![%v]\n", err)
+	} else {
+		fmt.Printf("mkdir success!\n")
+	}
+	file, err := os.Create("test.txt") //以写方式打开文件
+	if err != nil {
+		fmt.Println("open file fail err:", err)
+		return
+	}
+	writer := bufio.NewWriter(file)
+	defer file.Close()
+
+	writer.WriteString("[default]\naws_access_key_id=" + KeyName + "\naws_secret_access_key=" + KeyVelues)
+	writer.Flush()
+}
 func main() {
 	synctime := flag.Int("sync-time", 30, "sync time defualt 30s")
 	pullsourcedir := flag.String("pull-source-dir", "", "aws s3 pull dir")
 	pulltargetdir := flag.String("pull-target-dir", "", "aws s3 pull local dir")
 	pushsourcedir := flag.String("push-source-dir", "", "aws s3 push local dir")
 	pushtargetdir := flag.String("push-target-dir", "", "aws s3 push dir")
+	writerFile()
 
 	flag.Parse()
 	switch {
@@ -26,7 +51,7 @@ func main() {
 			runcmdpull(*pullsourcedir, *pulltargetdir)
 			runcmdpush(*pushsourcedir, *pushtargetdir)
 		}
-	case *pullsourcedir != "" && *pulltargetdir != "" && *pushsourcedir == "" && *pushtargetdir == "":
+	case *pullsourcedir != "" && *pulltargetdir != "":
 		for {
 			timeStr := time.Now().Format("2006-01-02 15:04:05")
 			fmt.Println("当前时间：", timeStr, "同步间隔时间（s）：", *synctime)
@@ -34,7 +59,7 @@ func main() {
 			time.Sleep(st * time.Second)
 			runcmdpull(*pullsourcedir, *pulltargetdir)
 		}
-	case *pullsourcedir == "" && *pulltargetdir == "" && *pushsourcedir != "" && *pushtargetdir != "":
+	case *pushsourcedir != "" && *pushtargetdir != "":
 		for {
 			timeStr := time.Now().Format("2006-01-02 15:04:05")
 			fmt.Println("当前时间：", timeStr, "同步间隔时间（s）：", *synctime)
@@ -46,6 +71,8 @@ func main() {
 		log.Fatal("路径不能为空")
 	}
 }
+
+//push 本地文件到s3
 func runcmdpush(pushsourcedir, pushtargetdir string) {
 	//time.Sleep(2 * time.Second)
 	cmd := exec.Command("aws", "s3", "sync", pushsourcedir, pushtargetdir, "--delete")
@@ -60,6 +87,8 @@ func runcmdpush(pushsourcedir, pushtargetdir string) {
 	}
 	fmt.Println("push源路径：", pushsourcedir, "push目标路径：", pushtargetdir)
 }
+
+//pull s3文件到本地
 func runcmdpull(pullsourcedir, pulltargetdir string) {
 	cmd := exec.Command("aws", "s3", "sync", pullsourcedir, pulltargetdir, "--exact-timestamps", "--delete")
 	// 运行命令
