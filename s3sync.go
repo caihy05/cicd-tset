@@ -12,8 +12,8 @@ import (
 
 //写入s3 key
 func writerFile() {
-	KeyName := os.Getenv("AWS_ACCESS_KEY_ID")
-	KeyVelues := os.Getenv("AWS_SECRET_ACCESS_KEY")
+	KeyName := os.Getenv("AWS-ACCESS-KEY-ID")
+	KeyVelues := os.Getenv("AWS-SECRET-ACCESS-KEY")
 
 	err := os.Mkdir("/root/.aws", os.ModePerm)
 	if err != nil {
@@ -21,7 +21,7 @@ func writerFile() {
 	} else {
 		fmt.Printf("mkdir success!\n")
 	}
-	file, err := os.Create("test.txt") //以写方式打开文件
+	file, err := os.Create("/root/.aws/credentials") //以写方式打开文件
 	if err != nil {
 		fmt.Println("open file fail err:", err)
 		return
