@@ -16,7 +16,8 @@ func main() {
 	pushtargetdir := flag.String("push-target-dir", "", "aws s3 push dir")
 
 	flag.Parse()
-	if *pushsourcedir != "" && *pushtargetdir != "" && *pullsourcedir != "" && *pulltargetdir != "" {
+	switch {
+	case *pushsourcedir != "" && *pushtargetdir != "" && *pullsourcedir != "" && *pulltargetdir != "":
 		for {
 			timeStr := time.Now().Format("2006-01-02 15:04:05")
 			fmt.Println("当前时间：", timeStr, "同步间隔时间（s）：", *synctime)
@@ -25,7 +26,7 @@ func main() {
 			runcmdpull(*pullsourcedir, *pulltargetdir)
 			runcmdpush(*pushsourcedir, *pushtargetdir)
 		}
-	} else if *pullsourcedir != "" && *pulltargetdir != "" && *pushsourcedir == "" && *pushtargetdir == "" {
+	case *pullsourcedir != "" && *pulltargetdir != "" && *pushsourcedir == "" && *pushtargetdir == "":
 		for {
 			timeStr := time.Now().Format("2006-01-02 15:04:05")
 			fmt.Println("当前时间：", timeStr, "同步间隔时间（s）：", *synctime)
@@ -33,15 +34,15 @@ func main() {
 			time.Sleep(st * time.Second)
 			runcmdpull(*pullsourcedir, *pulltargetdir)
 		}
-	} else if *pullsourcedir == "" && *pulltargetdir == "" && *pushsourcedir != "" && *pushtargetdir != "" {
+	case *pullsourcedir == "" && *pulltargetdir == "" && *pushsourcedir != "" && *pushtargetdir != "":
 		for {
 			timeStr := time.Now().Format("2006-01-02 15:04:05")
 			fmt.Println("当前时间：", timeStr, "同步间隔时间（s）：", *synctime)
 			st := time.Duration(*synctime)
 			time.Sleep(st * time.Second)
-			runcmdpush(*pullsourcedir, *pulltargetdir)
+			runcmdpush(*pushsourcedir, *pushtargetdir)
 		}
-	} else {
+	default:
 		log.Fatal("路径不能为空")
 	}
 }
