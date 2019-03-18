@@ -75,7 +75,7 @@ func main() {
 //push 本地文件到s3
 func runcmdpush(pushsourcedir, pushtargetdir string) {
 	//time.Sleep(2 * time.Second)
-	cmd := exec.Command("aws", "s3", "sync", pushsourcedir, pushtargetdir, "--delete")
+	cmd := exec.Command("aws", "s3", "sync", pushsourcedir, pushtargetdir)
 
 	// 运行命令
 	if err := cmd.Start(); err != nil {
@@ -90,7 +90,7 @@ func runcmdpush(pushsourcedir, pushtargetdir string) {
 
 //pull s3文件到本地
 func runcmdpull(pullsourcedir, pulltargetdir string) {
-	cmd := exec.Command("aws", "s3", "sync", pullsourcedir, pulltargetdir, "--exact-timestamps", "--delete")
+	cmd := exec.Command("aws", "s3", "sync", pullsourcedir, pulltargetdir, "--exact-timestamps")
 	// 运行命令
 	if err := cmd.Start(); err != nil {
 		log.Fatal(err)
