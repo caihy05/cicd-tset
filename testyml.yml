@@ -1,0 +1,5 @@
+contexts:
+- context:
+    UserName: 123456
+    PassWord: admin
+  name: kubernetes
